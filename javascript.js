@@ -1,63 +1,82 @@
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const scissors = document.querySelector(".scissors");
+const player = document.querySelector(".player");
+const computer = document.querySelector(".computer");
+const rounds = document.createElement("p");
+document.body.appendChild(rounds);
+let playerScore = 0;
+let computerScore = 0;
+const playAgain=document.createElement("button");
+playAgain.textContent = "Play Again!";
+document.body.appendChild(playAgain);
+playAgain.style.display = "none";
+
+
+rock.addEventListener("click", function(){
+    if (playerScore < 5 && computerScore < 5) { 
+        playRound("rock", getComputerChoice());
+    }
+});
+
+paper.addEventListener("click", function(){
+    if (playerScore < 5 && computerScore < 5) { 
+        playRound("paper", getComputerChoice());
+    }
+});
+
+scissors.addEventListener("click", function(){
+    if (playerScore < 5 && computerScore < 5) { 
+        playRound("scissors", getComputerChoice());
+    }
+});
+
+playAgain.addEventListener("click", function(){
+    playerScore = 0;
+    computerScore = 0;
+    player.textContent=playerScore;
+    computer.textContent = computerScore;
+    rounds.textContent = "";
+})
+
+
+
+
 function getComputerChoice(){
     let x = Math.floor(Math.random()*3);
     switch(x){
         case 0:
-            return ("Rock");
+            return ("rock");
             break;
         case 1:
-            return ("Paper");
+            return ("paper");
             break;
         case 2:
-            return ("Scissors")
+            return ("scissors")
             break;
     }
 }
 
 
 function playRound(playerSelection, computerSelection){
-    playerSelection = playerSelection.toUpperCase();
-    computerSelection = computerSelection.toUpperCase();
-    if ((playerSelection == "ROCK" && computerSelection=="PAPER") || (playerSelection == "PAPER" && computerSelection=="SCISSORS" ) || (playerSelection=="SCISSORS" && computerSelection=="ROCK")){
-        return("You Lose! " + computerSelection + " beats " + playerSelection );
-    }
-
-    else if (playerSelection==computerSelection){
-        return "It's a tie!";
-        
+    if ((playerSelection == "rock" && computerSelection=="paper") || (playerSelection == "paper" && computerSelection=="scissors" ) || (playerSelection=="scissors" && computerSelection=="rock")){
+        computerScore++;
+        computer.textContent = computerScore;
     }
 
     else{
-        return("You Win! " + playerSelection + " beats " + computerSelection );
+        playerScore++;
+        player.textContent = playerScore;
     }
 
-}
-
-function game(){
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i=0; i<5; i++){
-        let playerSelection = prompt("Enter your choice");
-        let computerSelection = getComputerChoice();
-        let result = playRound(playerSelection, computerSelection);
-        console.log(result);
-        if(result.startsWith("You W")){
-            playerScore++;
-        }
-        else if (result.startsWith("You L")){
-            computerScore++;
-        }
-
-    }
-    if (playerScore > computerScore) {
-        console.log("YOU WIN LETS GOOOOOOOOOOOOOOO");
-    } else if (playerScore < computerScore) {
-        console.log("LLLLLLLLL (you lost the round)");
-    } else {
-        console.log("ITS A TIE!");
+    if ((playerScore==5 || computerScore ==5)&& playerScore!=computerScore){
+        if (playerScore > computerScore) {
+            rounds.textContent=("ugh. you won");
+        } 
+        else{
+            rounds.textContent=("LLLLLLLLL (you lost)");
+        }   
+        playAgain.style.display="block";
     }
 }
-
-game();
-
-
 
